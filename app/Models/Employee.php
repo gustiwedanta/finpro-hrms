@@ -4,24 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Department;
+use App\Models\Title;
 
 class Employee extends Model
 {
-    protected $table = "employees";
-    protected $fillable = ["nama", "no_ktp", "npwp", "foto_profil", "position_id", "family_status_id"];
+    use HasFactory;
 
-    public function Position(){
-        return $this->belongsTo('App\Models\Position');
+    protected $fillable = ['nik', 'full_name', 'department_id', 'title_id', 'join_date','annual_leave','long_leave','carry_over'];
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
-    public function FamilyStatus(){
-        return $this->belongsTo('App\Models\FamilyStatus');
-    }
-
-    public function Allowance(){
-        return $this->belongsToMany(Allowance::class, 'employee_allowance');
-    }
-    public function Deduction(){
-        return $this->belongsToMany(Deduction::class, 'employee_deduction');
+    public function title()
+    {
+        return $this->belongsTo(Title::class);
     }
 }

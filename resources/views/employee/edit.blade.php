@@ -1,202 +1,76 @@
 @extends('layout.master')
 @section('title')
-    Edit Employee {{$employee->id}} Details
+    Edit Employee
 @endsection
 @section('content')
-
-        <a href="/employee" class="btn btn-danger mb-1 pl-4 pr-4">Back</a> 
-          <div class="section-body">
-            <h2 class="section-title">Current Employee Details {{$employee->nama}}!</h2>
-                <div class="row mt-sm-4">
-                  <div class="col-12 col-md-12 col-lg-5">
-                    <div class="card profile-widget">
-                        <div class="profile-widget-header">                     
-                        <img src="{{asset('foto/' . $employee->foto_profil )}}" class="rounded profile-widget-picture" alt="...">
-                        <div class="profile-widget-items">
-                          <div class="profile-widget-item">
-                            <div class="profile-widget-item-label">ID</div>
-                            <div class="profile-widget-item-value">{{$employee->id}}</div>
-                          </div>
-
-                          <div class="profile-widget-item">
-                            <div class="profile-widget-item-label">Position</div>
-                            <div class="profile-widget-item-value">{{$employee->Position->nama}}</div>
-                          </div>
-
-                          <div class="profile-widget-item">
-                            <div class="profile-widget-item-label">Family Status</div>
-                            <div class="profile-widget-item-value">{{$employee->FamilyStatus->nama}}</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="profile-widget-description">
-                        <!-- deskripsi profil -->
-                        
-                        <div class="profile-widget-name">{{$employee->nama}} <div class="text-muted d-inline font-weight-normal"><div class="slash"></div> {{$employee->position->nama}}</div></div>
-                            <b>No. KTP  :</b>
-                            <br>{{$employee->no_ktp}} <br> <br>
-                            <b>NPWP     : </b>
-                            <br>{{$employee->npwp}}
-                            <br>
-                      </div>
-                    </div>
-
-
-                    <h2 class="section-title">Edit Employee Data</h2>
-                    <div class="card">
-                      <div class="card-body">
-                        <form action="/employee/{{$employee->id}}" method="POST" enctype="multipart/form-data">
-                          @csrf
-                          @method('put')
-                          <div class="form-group ">
-                            <label for="foto_profil">Change Picture</label><br>
-                            <input type="file" name="foto_profil" id="body">
-                          </div>
-    
-                          <div class="form-group">
-                            <label>Change Position</label>
-                            <select name="position_id" class="form-control">
-                              <option disabled selected>Select Position</option>
-                                @foreach ($position as $item)
-                                <option value="{{$item->id}}">{{$item->nama}}</option>
-                            @endforeach
-                            </select>
-                          </div>
-    
-                          <div class="form-group">
-                            <label>Change Family Status</label>
-                            <select name="family_status_id" class="form-control">
-                              <option disabled selected>Select Family Status</option>
-                                @foreach ($FamilyStatus as $item)
-                                <option value="{{$item->id}}">{{$item->nama}}</option>
-                            @endforeach
-                            </select>
-                          </div>
-
-                          <button type="submit" class="btn btn-primary btn-lg mb-1">
-                            Update Data
-                          </button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-            
-
-
-
-              <div class="col-12 col-md-12 col-lg-7">
-                
-                <div class="card">
-                    <div class="details m-5" style="display:none">
-                        <form action="/eallowance" method="POST">
-                            @csrf
-                            <input type="hidden" name="employee_id" value="{{$employee->id}}">
-                            <div class="form-group">
-                                <label>Add Allowance</label>
-                                <select name="allowance_id" class="form-control">
-                                  <option disabled selected>Select Allowance</option>
-                                    @foreach ($allowance as $item)
-                                    <option value="{{$item->id}}">{{$item->nama}}</option>
-                                @endforeach
-                                </select>
-                              </div>
-                              <button type="submit" class="btn btn-primary btn-lg mb-1">
-                                Add Allowance
-                              </button>
-                        </form>
-                        
-                        <table class="table table-striped mt-3">
-                          <thead>                                 
-                            <tr>
-                              <th>Allowance Name</th>
-                              <th>Value</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                                @forelse ($has_allowance as $key=>$value)
-                                    <tr>
-                                        <td>{{$value->allowance->nama}}</td>
-                                        <td>Rp. <?= number_format($value->allowance->value)?></td>
-                                        <td>
-                                          <form action="/eallowance/{{$value->id}}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <input type="submit" value="Delete" class="btn btn-danger">
-                                          </form>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr colspan="3">
-                                        <td>No data</td>
-                                        <td>No data</td>
-                                        <td>No data</td>
-                                    </tr>  
-                                @endforelse
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                <a id="more1" class="btn btn-primary btn-block" onclick="$('.details').slideToggle(function(){$('#more1').html($('.details').is(':visible')?'See Less Allowance':'See More Allowance');});">Show Allowance</a>
-                  
-                <div class="card mt-5">
-                        <div class="details1 m-5" style="display:none">
-                          <form action="/ededuction" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <input type="hidden" name="employee_id" value="{{$employee->id}}">
-                                <div class="form-group">
-                                <label>Add Deduction</label>
-                                <select name="deduction_id" class="form-control">
-                                  <option disabled selected>Select Deduction</option>
-                                    @foreach ($deduction as $item)
-                                    <option value="{{$item->id}}">{{$item->nama}}</option>
-                                @endforeach
-                                </select>
-                              </div>
-                              <button type="submit" class="btn btn-primary btn-lg mb-1">
-                                Add Deduction
-                              </button>
-                        </form>
-                            <table class="table table-striped mt-3">
-                              <thead>                                 
-                                <tr>
-                                  <th>Deduction Name</th>
-                                  <th>Value</th>
-                                  <th>Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>                                 
-                                <tr>
-                                    @forelse ($has_deduction as $key=>$value)
-                                        <tr>
-                                            <td>{{$value->deduction->nama}}</td>
-                                            <td>Rp. <?= number_format($value->deduction->value)?></td>
-                                            <td>
-                                              <form action="/ededuction/{{$value->id}}" method="post">
-                                                @csrf
-                                                @method('delete')
-                                                <input type="submit" value="Delete" class="btn btn-danger">
-                                            </form>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr colspan="3">
-                                            <td>No data</td>
-                                            <td>No data</td>
-                                            <td>No data</td>
-                                        </tr>  
-                                    @endforelse
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                    <a id="more" class="btn btn-primary btn-block" onclick="$('.details1').slideToggle(function(){$('#more').html($('.details1').is(':visible')?'See Less Deduction':'See More Deduction');});">Show Deduction</a>
-
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 col-sm-8 offset-sm-2 col-md-10 offset-md-3 col-lg-6 offset-lg-3 col-xl-10 offset-xl-1">
+            <a href="/employee" class="btn btn-danger mb-5 pl-4 pr-4">Back</a>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>Edit Employee</h4>
                 </div>
-              </div>
+
+                <div class="card-body">
+                    <form method="POST" action="{{ route('employee.update', $employee->id) }}" enctype="multipart/form-data" class="needs-validation" novalidate="">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="nik">NIK Karyawan</label>
+                                <input type="number" class="form-control" id="inputEmail" placeholder="Input NIK" name="nik" value="{{ $employee->nik }}">
+                                @error('nik')
+                                    <div class="alert alert-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="full_name">Name</label>
+                                <input type="text" class="form-control" id="-" placeholder="Input Name" name="full_name" value="{{ $employee->full_name }}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Department</label>
+                                <select name="department_id" class="form-control select1">
+                                    <option selected>Select Department</option>
+                                    @foreach ($departments as $item)
+                                        <option value="{{ $item->id }}" {{ $item->id == $employee->department_id ? 'selected' : '' }}>
+                                            {{ $item->dept_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Title</label>
+                                <select name="title_id" class="form-control select1">
+                                    <option selected>Select Title</option>
+                                    @foreach ($titles as $item)
+                                        <option value="{{ $item->id }}" {{ $item->id == $employee->title_id ? 'selected' : '' }}>
+                                            {{ $item->title_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="date">Join Date:</label>
+                                <input type="date" class="form-control" id="join_date" name="join_date" value="{{ $employee->join_date }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-lg btn-block " tabindex="4">
+                                Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-          </div>
-        </section>
-      </div>
+        </div>
+    </div>
+</div>
 @endsection

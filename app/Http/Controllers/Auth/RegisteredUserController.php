@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Title;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -12,7 +14,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use App\Models\AdminCode;
 use DB;
-
 
 class RegisteredUserController extends Controller
 {
@@ -23,8 +24,8 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        $code = DB::table('admin_code')->select('code')->first();
-        return view('auth.register', compact('code'));
+        $employees = Employee::all();
+        return view('auth.register', compact('employees'));
     }
 
     /**
@@ -37,28 +38,31 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        $code = DB::table('admin_code')->select('code')->first();
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'admin_code' => ['required']
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'employee_id' => 'required',
         ]);
-        
-        $codereq = $request->admin_code;
-        if ($code->code == $codereq) {
-            
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
-            event(new Registered($user));
 
-            return redirect(RouteServiceProvider::HOME);
-        }else{
-            
-            return back()->with('adcode', 'Admin Code Invalid');
-        }
+        $employee = Employee::findOrFail($request->employee_id);
+
+        // Periksa title_id dari employee yang dipilih
+        $title = Title::findOrFail($employee->title_id);
+        $isSupervisor = in_array($title->title_name, ['Supervisor', 'Manager', 'Director']);
+        Auth::login($user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'employee_id' => $request->employee_id,
+        ]));
+
+        $user->level = $isSupervisor ? 'supervisor' : 'employee';
+        $user->save();
+        // dd($user->level);
+
+       event(new Registered($user));
+
+       return redirect(RouteServiceProvider::HOME);
     }
 }

@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Employee;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class AuthController extends Controller
+{
+    /**
+     * Summary of showRegistrationForm
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function showRegistrationForm()
+    {
+        $employees = Employee::all();
+        return view('auth/register', compact('employees'));
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'employee_id' => 'required',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'employee_id' => $request->employee_id,
+        ]);
+
+        Auth::login($user);
+
+        return redirect('/employees'); // Ganti dengan halaman setelah login
+
+    }
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    /**
+     * Summary of login
+     * @param \App\Http\Requests\Auth\LoginRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function login(LoginRequest $request)
+    {
+
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            // Login successful
+            return redirect('/dashboard');
+        } else {
+            // Login failed
+            return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
+        }
+        // }
+    }
+    }
+    // public function logout()
+    // {
+    //     return redirect('auth.login');
+    // }
+    // } { {
+    //     }

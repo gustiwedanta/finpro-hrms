@@ -34,7 +34,7 @@
           <h4>Total Allowance Type</h4>
         </div>
         <div class="card-body">
-          <?= count($allowance)?>
+          {{-- <?= count($allowance)?> --}}
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
           <h4>Total Deduction Type</h4>
         </div>
         <div class="card-body">
-          <?= count($deduction)?>
+          {{-- <?= count($deduction)?> --}}
         </div>
       </div>
     </div>
@@ -89,7 +89,7 @@
           <h4>Total Payroll</h4>
         </div>
         <div class="card-body">
-          <?php
+          {{-- <?php
             $sum = 0;
             foreach($payroll as $key=>$value)
             {
@@ -177,7 +177,7 @@
             }
             echo "Rp ";
             echo number_format($sum);
-            ?>
+            ?> --}}
         </div>
       </div>
     </div>

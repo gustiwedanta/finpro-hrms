@@ -19,17 +19,18 @@ class SummaryController extends Controller
      */
     public function index()
     {
-        $payroll = Employee::withSum('Allowance', 'value')->withSum('Deduction', 'value')->get();
-        $last5 = Employee::latest()->take(5)->get();
-        $paylast30 = Employee::withSum('Allowance', 'value')->withSum('Deduction', 'value')->where('created_at', '>', now()->subDays(30)->endOfDay())->get();
-        // dd($payroll);
-        $allowlast30 = Employee::withSum('Allowance', 'value')->where('created_at', '>', now()->subDays(30)->endOfDay())->get();
-        $deductlast30 = Employee::withSum('Deduction', 'value')->where('created_at', '>', now()->subDays(30)->endOfDay())->get();
-        $allowance = Allowance::all();
-        $deduction = Deduction::all();
-        $employee = Employee::all();
-        $position = Position::all();
-        return view('summary', compact('payroll','allowance', 'deduction', 'employee', 'position', 'allowlast30', 'deductlast30', 'paylast30', 'last5'));
+        // $payroll = Employee::withSum('Allowance', 'value')->withSum('Deduction', 'value')->get();
+        // $last5 = Employee::latest()->take(5)->get();
+        // $paylast30 = Employee::withSum('Allowance', 'value')->withSum('Deduction', 'value')->where('created_at', '>', now()->subDays(30)->endOfDay())->get();
+        // // dd($payroll);
+        // $allowlast30 = Employee::withSum('Allowance', 'value')->where('created_at', '>', now()->subDays(30)->endOfDay())->get();
+        // $deductlast30 = Employee::withSum('Deduction', 'value')->where('created_at', '>', now()->subDays(30)->endOfDay())->get();
+        // $allowance = Allowance::all();
+        // $deduction = Deduction::all();
+        //  $employee = Employee::all();
+        //  $position = Position::all();
+        //return view('summary', compact('payroll', 'deduction', 'employee', 'position', 'allowlast30', 'deductlast30', 'paylast30', 'last5'));
+        return view('dashboard');
     }
 
     

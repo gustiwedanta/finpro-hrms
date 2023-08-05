@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Kim Payroll APP &mdash; 2021</title>
+  <title>Wuling HRMS &mdash; 2023</title>
 
-  <link rel="icon" href="{{ url('img/favicon.png') }}">
-
+  <link rel="icon" href="{{ url('img/logo.png') }}">
+ 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{asset('modules/bootstrap/css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{asset('modules/fontawesome/css/all.min.css')}}">
@@ -52,7 +52,7 @@
               <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <img alt="image" src="{{asset('img/avatar/avatar-1.png')}}" class="rounded-circle mr-1">
                 <div class="d-sm-none d-lg-inline-block">Hi, {{Auth::user()->name}}!</div>
-              </a>
+              </a>  
               <div class="dropdown-menu dropdown-menu-right">
                   <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -75,64 +75,99 @@
         <div class="main-sidebar sidebar-style-2">
           <aside id="sidebar-wrapper">
             <div class="sidebar-brand">
-              <a href="/dashboard">Kim Payroll App</a>
+              <a href="/dashboard">Wuling HRMS</a>
             </div>
               <div class="sidebar-brand sidebar-brand-sm">
-                <img src="{{asset('img/Group 15.png')}}" alt="logo" height="40px" width="40px" class="shadow-dark rounded-circle">
+                <img src="{{asset('img/logo.png')}}" alt="logo" height="40px" width="40px" class="shadow-dark rounded-circle">
               </div>
                 <ul class="sidebar-menu">
+                <div class="p-3 hide-sidebar-mini">
+                  <a href="/propose-leave" class="btn btn-primary btn-lg btn-block btn-icon-splitS">
+                    <i class="fas fa-rocket"></i>
+                    Propose Leave
+                  </a>
+                </div>
                   <li class="dropdown {{ (request()->is('dashboard*')) ? 'active' : '' }}">
                     <a href="/dashboard" class="nav-link">
                       <i class="fas fa-fire"></i>
                       <span>Summary</span>
                     </a>
                   </li>
-                  <li class="dropdown {{ (request()->is('employee*')) ? 'active' : '' }}">
+                  {{-- <li class="dropdown {{ (request()->is('employee*')) ? 'active' : '' }}">
                     <a href="/employee" class="nav-link">
                       <i class="fas fa-users"></i>
-                      <span>Employee Data</span>
-                    </a>
+                      <span>Propose Leave</span>
+                    </a> --}}
+                  </li>
+                  @if (auth()->user()->level=="admin")
+                  <li class="dropdown {{ (request()->is('employee*')) ? 'active' : '' }}">  
+                    <a href="/employee" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Employee Data</span>
+                    </a>        
                   </li>
                   <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown">
                       <i class="fas fa-table"></i>
-                      <span>Payroll Component</span>
+                      <span>Employee Component</span>
                     </a>
                     <ul class="dropdown-menu">
-                      <li class="{{ (request()->is('allowance*')) ? 'active' : '' }}">
-                        <a class="nav-link" href="/allowance">Allowance</a>
+                      <li class="{{ (request()->is('department')) ? 'active' : '' }}">
+                        <a class="nav-link" href="/department">Department list</a>
+                      </li>
+                      <li class="{{ (request()->is('title')) ? 'active' : '' }}">
+                        <a class="nav-link" href="/title">Title list</a>
+                      </li>
+                    </ul>
+                  @endif
+                 
+                  <li class="dropdown">
+                    <a href="#" class="nav-link has-dropdown">
+                      <i class="fas fa-table"></i>
+                      <span>Leave Data</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li class="{{ (request()->is('employee/remain-leave')) ? 'active' : '' }}">
+                        <a class="nav-link" href="/employee/remain-leave">Remain Leave</a>
                       </li>
 
+                      <li class="{{ (request()->is('/leave-type')) ? 'active' : '' }}">
+                        <a class="nav-link" href="/leave-type">Leave Type</a>
+                      </li>
+
+
                       <li class="{{ (request()->is('deduction*')) ? 'active' : '' }}">
-                        <a class="nav-link" href="/deduction">Deduction</a>
+                        <a class="nav-link" href="/deduction">Approved Leave</a>
                       </li>
 
                       <li class="{{ (request()->is('taxes*')) ? 'active' : '' }}">
-                        <a class="nav-link" href="/taxes">Taxes</a>
+                        <a class="nav-link" href="/taxes">A7 Data</a>
                       </li>
 
-                      <li class="{{ (request()->is('position*')) ? 'active' : '' }}">
-                        <a class="nav-link" href="/position">Position</a>
+                      <li class="{{ (request()->is('taxes*')) ? 'active' : '' }}">
+                        <a class="nav-link" href="/taxes">My Leave</a>
                       </li>
-
-                      <li class="{{ (request()->is('family_status*')) ? 'active' : '' }}">
-                        <a class="nav-link" href="/family_status">Family Status</a>
-                      </li>
-                  </ul>
-              </li>
-              <li class="dropdown {{ (request()->is('payroll*')) ? 'active' : '' }}">
+                    </ul>
+                    </li>
+                    <div class="p-3 hide-sidebar-mini">
+                      <a href="/logout" class="btn btn-danger btn-lg btn-block btn-icon-splitS">
+                        <i class="fas fa-door-open"></i>
+                       Log Out
+                      </a>
+                    </div>
+              {{-- <li class="dropdown {{ (request()->is('payroll*')) ? 'active' : '' }}">
                 <a href="/payroll" class="nav-link">
                   <i class="fas fa-wallet"></i>
                   <span>Payroll</span>
                 </a>
               </li>
-            
-                <div class="p-3 hide-sidebar-mini">
+             --}}   
+                {{-- <div class="p-3 hide-sidebar-mini">
                   <a href="/admin-menu" class="btn btn-primary btn-lg btn-block btn-icon-split align-bottom">
                     <i class="fas fa-rocket"></i>
                     Admin Code
                   </a>
-                </div>
+                </div> --}}
 
               </div>
             </div>
