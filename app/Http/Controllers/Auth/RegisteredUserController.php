@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
 
         $employee = Employee::findOrFail($request->employee_id);
 
-        // Periksa title_id dari employee yang dipilih
+        // check title from selected employee
         $title = Title::findOrFail($employee->title_id);
         $isSupervisor = in_array($title->title_name, ['Supervisor', 'Manager', 'Director']);
         Auth::login($user = User::create([

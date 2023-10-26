@@ -1021,6 +1021,7 @@ select.form-control:not([size]):not([multiple]) {
     padding-bottom: 0;
     height: auto;
     min-height: auto;
+    justify-content: center;
     display: block;
 }
 .card.card-statistic-1 .card-header h4,
@@ -1067,6 +1068,8 @@ select.form-control:not([size]):not([multiple]) {
 .card.card-statistic-2 .card-icon .fal {
     font-size: 22px;
     color: #fff;
+    justify-content: center; /* Ikon akan berada di tengah horizontal */
+    align-items: center; 
 }
 .card.card-statistic-1 .card-icon {
     line-height: 90px;
@@ -3635,9 +3638,11 @@ body.layout-3 .main-footer {
 .main-sidebar .sidebar-brand a {
     text-decoration: none;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     font-weight: 700;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: #000;
+    font-size: small;
 }
 .main-sidebar .sidebar-user {
     display: inline-block;

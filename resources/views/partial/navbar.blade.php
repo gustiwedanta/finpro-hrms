@@ -11,6 +11,11 @@
   <link rel="stylesheet" href="{{asset('modules/bootstrap/css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{asset('modules/fontawesome/css/all.min.css')}}">
 
+  {{-- <link rel="stylesheet" href="path/to/fontawesome.min.css"> --}}
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{asset("modules/fullcalendar/fullcalendar.min.css") }}" >
+    
   <!-- CSS Libraries -->
   <link rel="stylesheet" href="{{asset('modules/jqvmap/dist/jqvmap.min.css')}}">
   <link rel="stylesheet" href="{{asset('modules/select2/dist/css/select2.min.css')}}">
@@ -28,6 +33,9 @@
 <!-- Start GA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+
 <script src="{{asset('js/page/modules-chartjs.js')}}"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -75,18 +83,20 @@
         <div class="main-sidebar sidebar-style-2">
           <aside id="sidebar-wrapper">
             <div class="sidebar-brand">
-              <a href="/dashboard">Wuling HRMS</a>
+              <a href="/dashboard">Leave Management System</a>
             </div>
               <div class="sidebar-brand sidebar-brand-sm">
                 <img src="{{asset('img/logo.png')}}" alt="logo" height="40px" width="40px" class="shadow-dark rounded-circle">
               </div>
                 <ul class="sidebar-menu">
+                @if (auth()->user()->level==="supervisor" && "employee")
                 <div class="p-3 hide-sidebar-mini">
-                  <a href="/propose-leave" class="btn btn-primary btn-lg btn-block btn-icon-splitS">
+                  <a href="/leave-request/create" class="btn btn-primary btn-lg btn-block btn-icon-splitS">
                     <i class="fas fa-rocket"></i>
                     Propose Leave
                   </a>
                 </div>
+                @endif
                   <li class="dropdown {{ (request()->is('dashboard*')) ? 'active' : '' }}">
                     <a href="/dashboard" class="nav-link">
                       <i class="fas fa-fire"></i>
@@ -130,47 +140,23 @@
                       <li class="{{ (request()->is('employee/remain-leave')) ? 'active' : '' }}">
                         <a class="nav-link" href="/employee/remain-leave">Remain Leave</a>
                       </li>
-
+                      
+                      @if (auth()->user()->level=="admin")
                       <li class="{{ (request()->is('/leave-type')) ? 'active' : '' }}">
                         <a class="nav-link" href="/leave-type">Leave Type</a>
                       </li>
+                      @endif
 
 
-                      <li class="{{ (request()->is('deduction*')) ? 'active' : '' }}">
-                        <a class="nav-link" href="/deduction">Approved Leave</a>
+                      <li class="{{ (request()->is('/leave-request')) ? 'active' : '' }}">
+                        <a class="nav-link" href="/leave-request">Leave Request</a>
                       </li>
-
-                      <li class="{{ (request()->is('taxes*')) ? 'active' : '' }}">
-                        <a class="nav-link" href="/taxes">A7 Data</a>
-                      </li>
-
-                      <li class="{{ (request()->is('taxes*')) ? 'active' : '' }}">
-                        <a class="nav-link" href="/taxes">My Leave</a>
+                      <li class="{{ (request()->is('/holiday-dates')) ? 'active' : '' }}">
+                        <a class="nav-link" href="/holiday-dates">Holiday Dates</a>
                       </li>
                     </ul>
                     </li>
-                    <div class="p-3 hide-sidebar-mini">
-                      <a href="/logout" class="btn btn-danger btn-lg btn-block btn-icon-splitS">
-                        <i class="fas fa-door-open"></i>
-                       Log Out
-                      </a>
-                    </div>
-              {{-- <li class="dropdown {{ (request()->is('payroll*')) ? 'active' : '' }}">
-                <a href="/payroll" class="nav-link">
-                  <i class="fas fa-wallet"></i>
-                  <span>Payroll</span>
-                </a>
-              </li>
-             --}}   
-                {{-- <div class="p-3 hide-sidebar-mini">
-                  <a href="/admin-menu" class="btn btn-primary btn-lg btn-block btn-icon-split align-bottom">
-                    <i class="fas fa-rocket"></i>
-                    Admin Code
-                  </a>
-                </div> --}}
-
               </div>
             </div>
-            
           </aside>
         </div>

@@ -7,23 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class LeaveRequest extends Model
 {
-    protected static function boot()
-{
-    parent::boot();
+    use HasFactory;
 
-    static::created(function ($leaveRequest) {
-        $employee = Employee::where('nik', $leaveRequest->nik)->first();
+    protected $fillable = [
+        'employee_id',
+        'leave_id',
+        'start_date',
+        'end_date',
+        'many_days',
+        'document',
+        'reason',
+        'approved_by_supervisor',
+        'approved_by_hr',
+    ];
 
-        if ($leaveRequest->leave_id == 1) {
-            $employee->calculateAnnualLeave();
-        } elseif ($leaveRequest->leave_id == 2) {
-            $employee->calculateLongLeave();
-        } elseif ($leaveRequest->leave_id == 3) {
-            // Logika pengoperan angka cuti dari tahun sebelumnya
-        }
+    // Define relationships
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
 
-        $employee->save();
-    });
-}
+    public function leaveType()
+    {
+        return $this->belongsTo(LeaveType::class, 'leave_id');
+    }
 
 }

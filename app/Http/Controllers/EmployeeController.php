@@ -42,8 +42,10 @@ class EmployeeController extends Controller
 
             if ($monthsDiff < 3) {
                 $employee->annual_leave = 0;
+            } elseif ($joinDate->day < 15 && $monthsDiff >= 1) {
+                $employee->annual_leave = min($monthsDiff, 11) + 1;
             } else {
-                $employee->annual_leave = min($monthsDiff, 8);
+                $employee->annual_leave = min($monthsDiff, 12);
             }
 
             if ($today->month === 1 && $today->day === 1) {
@@ -136,12 +138,17 @@ class EmployeeController extends Controller
     }
 
     public function destroy($id)
-    {
-        $employee = Employee::findOrFail($id);
-        $employee->delete();
-
-        return redirect('/employee')->with('success', 'Employee deleted successfully.');
+{
+    $employee = Employee::withTrashed()->findOrFail($id);
+    
+    if ($employee->trashed()) {
+        $employee->restore(); // Mengembalikan jika sudah dihapus secara lunak
+        return redirect('/employee')->with('success', 'Employee berhasil dipulihkan.');
+    } else {
+        $employee->delete(); // Menghapus secara lunak
+        return redirect('/employee')->with('success', 'Employee berhasil dihapus secara lunak.');
     }
+}
 
     public function importexcel(Request $request){
         $data = $request->file('file');

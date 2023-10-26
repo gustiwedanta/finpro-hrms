@@ -26,22 +26,7 @@
                 </tr>
               </thead>
               <tbody> 
-                <!-- yg ini gw hapus yaaa.. biar rapii diliatnya                            -->
-                <!-- <tr>
-                  <td class="text-center">
-                    1
-                  </td>
-                  <td>Create a mobile app</td>
-                  <td>
-                    Rp. 500.000
-                  </td>
-                  <td>
-                    Mamang Kesbor, KimKim, Putra
-                  </td>
-                  <td>
-                    <a href="#" class="btn btn-primary">Edit</a>
-                  </td>
-                </tr> -->
+                
                 @forelse ($department as $key=>$value)
                     <tr>
                         <td class="text-center">{{$value->id}}</td>

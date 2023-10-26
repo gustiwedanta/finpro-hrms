@@ -24,15 +24,12 @@ class CreateEmployeeTable extends Migration
             $table->foreign('title_id')->references('id')->on('titles');
             $table->date('join_date');
             $table->string('annual_leave')->default(0);
+            $table->string('used_leave')->default(0);
             $table->string('long_leave')->default(0);
+            $table->string('used_long_leave')->default(0);
             $table->string('carry_over')->default(0);
-            // $table->string('npwp')->nullable();
-            // $table->string('foto_profil');
-            // $table->unsignedBigInteger('position_id');
-            // $table->foreign('position_id')->references('id')->on('positions');
-            // $table->unsignedBigInteger('family_status_id');
-            // $table->foreign('family_status_id')->references('id')->on('family_status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

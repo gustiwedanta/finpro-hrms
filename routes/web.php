@@ -1,9 +1,10 @@
 <?php
-
-// use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeptController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\holidayDatesController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\ProposeLeaveController;
 use App\Http\Controllers\SummaryController;
@@ -22,13 +23,25 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/employee/remain-leave', [EmployeeController::class, 'remainLeave']);
 
+Route::get('/leave-request/create', [LeaveRequestController::class, 'create']);
+Route::post('/leave-request/store', [LeaveRequestController::class, 'store'])->name('leave-request.store');
+Route::get('/leave-request', [LeaveRequestController::class, 'index']);
+Route::put('/leave-request/{id}', [LeaveRequestController::class, 'update'])->name('leave-request.update');
+Route::get('/leave-request/submit', [LeaveRequestController::class, 'submit'])->name('leave-request.submit');
+Route::post('/leave-request/submit', [LeaveRequestController::class, 'submit']);
+Route::get('/dashboard/admin', [DashboardController::class, 'admin'])->name('dashboard.admin');
+Route::get('/dashboard/supervisor', [DashboardController::class, 'supervisor'])->name('dashboard.supervisor');
+Route::get('/dashboard/employee', [DashboardController::class, 'employee'])->name('dashboard.employee');
+
 Route::resources([
-    'employee' => \App\Http\Controllers\EmployeeController::class,
+    'employee' => EmployeeController::class,
     'department' => DeptController::class,
     'title' => TitleController::class,
     'propose-leave' => \App\Http\Controllers\ProposeLeaveController::class,
-    'dashboard' => SummaryController::class,
+    'dashboard' => DashboardController::class,
     'leave-type' => LeaveTypeController::class,
+    'holiday-dates' => holidayDatesController::class,
+    // 'leave-request' => LeaveRequestController::class,
 ]);
 
 // Untuk custom controller EmployeeController dengan nama rute 'remain-leave'

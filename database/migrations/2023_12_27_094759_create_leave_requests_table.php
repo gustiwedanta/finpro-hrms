@@ -15,11 +15,13 @@ class CreateLeaveRequestsTable extends Migration
 
 public function up()
 {
+    Schema::dropIfExists('leave_requests');
     Schema::create('leave_requests', function (Blueprint $table) {
         $table->id();
         $table->unsignedBigInteger('employee_id');
         $table->foreign('employee_id')->references('id')->on('employees');
-        $table->integer('leave_id');
+        $table->unsignedBigInteger('leave_id');
+        $table->foreign('leave_id')->references('id')->on('leave_type');
         $table->date('start_date');
         $table->date('end_date');
         $table->integer('many_days');

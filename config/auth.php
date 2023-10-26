@@ -39,8 +39,12 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+            'logout' => [
+                'web' => '/login', // Sesuaikan dengan rute login Anda
         ],
     ],
+
+],
 
     /*
     |--------------------------------------------------------------------------
